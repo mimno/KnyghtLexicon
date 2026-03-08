@@ -1,0 +1,897 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knyght's Dictionarium · 1538</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English:ital@0;1&family=EB+Garamond:ital,wght@0,400;0,500;1,400&family=Cardo:ital@0;1&display=swap" rel="stylesheet">
+<style>
+/* ── Variables ─────────────────────────────────────────── */
+:root {
+  --ink:        #1c1410;
+  --ink-light:  #3a2e28;
+  --red:        #7a1c1c;
+  --red-faint:  #f0e6e6;
+  --paper:      #f5f0e3;
+  --paper-dark: #ede6cf;
+  --rule:       #c8b89a;
+  --sans:       'EB Garamond', Georgia, serif;
+  --display:    'IM Fell English', Georgia, serif;
+  --scholarly:  'Cardo', 'Palatino Linotype', Palatino, serif;
+}
+
+/* ── Reset & Base ──────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { font-size: 17px; }
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  min-height: 100vh;
+  line-height: 1.55;
+}
+
+/* ── Ornamental Header ─────────────────────────────────── */
+header {
+  text-align: center;
+  padding: 2.4rem 1rem 0;
+  border-bottom: 2px solid var(--ink);
+  position: relative;
+}
+
+.ornament-band {
+  font-size: 1.1rem;
+  letter-spacing: 0.6em;
+  color: var(--red);
+  margin-bottom: 0.6rem;
+  user-select: none;
+}
+
+header h1 {
+  font-family: var(--display);
+  font-size: clamp(2rem, 6vw, 3.4rem);
+  font-weight: normal;
+  letter-spacing: 0.04em;
+  line-height: 1.1;
+  color: var(--ink);
+}
+
+.subtitle {
+  font-family: var(--display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--red);
+  margin: 0.3rem 0 0.9rem;
+  letter-spacing: 0.03em;
+}
+
+/* Double rule under title */
+.header-rule {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin: 0.7rem auto 0;
+  max-width: 600px;
+}
+.header-rule::before,
+.header-rule::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--ink);
+  box-shadow: 0 3px 0 var(--ink);
+  margin-bottom: 2px;
+}
+.header-rule span {
+  color: var(--red);
+  font-size: 1rem;
+  user-select: none;
+}
+
+/* ── Search Section ────────────────────────────────────── */
+.search-section {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 0.8rem;
+}
+
+.search-label {
+  font-family: var(--display);
+  font-size: 0.78rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  display: block;
+  margin-bottom: 0.5rem;
+}
+
+.search-wrap {
+  position: relative;
+}
+
+.search-wrap::before {
+  content: '❧';
+  position: absolute;
+  left: 0.9rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--red);
+  font-size: 1.1rem;
+  pointer-events: none;
+}
+
+#query {
+  width: 100%;
+  padding: 0.7rem 1rem 0.7rem 2.4rem;
+  font-family: var(--display);
+  font-size: 1.25rem;
+  background: #fff;
+  border: 1px solid var(--ink);
+  border-bottom: 3px solid var(--ink);
+  color: var(--ink);
+  outline: none;
+  letter-spacing: 0.02em;
+  transition: border-color 0.15s;
+}
+
+#query:focus {
+  border-color: var(--red);
+  background: #fffaf5;
+}
+
+#query::placeholder {
+  color: #b0a090;
+  font-style: italic;
+}
+
+.search-meta {
+  font-size: 0.78rem;
+  color: #8a7a6a;
+  margin-top: 0.5rem;
+  font-style: italic;
+  letter-spacing: 0.02em;
+}
+
+/* ── Results Container ─────────────────────────────────── */
+#results-container {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 1.5rem 4rem;
+}
+
+/* Section label above grouped results */
+.results-section-label {
+  font-family: var(--display);
+  font-size: 0.72rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--rule);
+  margin: 1.4rem 0 0.6rem;
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+}
+.results-section-label::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--rule);
+}
+
+/* Individual entry card */
+.entry {
+  padding: 0.9rem 0 0.9rem;
+  border-bottom: 1px solid var(--rule);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  column-gap: 1rem;
+  row-gap: 0.25rem;
+  align-items: start;
+}
+
+.entry-orth {
+  font-family: var(--display);
+  font-size: 1.25rem;
+  font-weight: normal;
+  color: var(--ink);
+  line-height: 1.2;
+  grid-column: 1;
+  grid-row: 1;
+  /* highlight matched portion */
+}
+
+.entry-orth mark {
+  background: none;
+  color: var(--red);
+  font-style: normal;
+}
+
+.entry-section {
+  font-size: 0.72rem;
+  letter-spacing: 0.1em;
+  color: #9a8a7a;
+  text-transform: uppercase;
+  grid-column: 2;
+  grid-row: 1;
+  text-align: right;
+  align-self: center;
+  white-space: nowrap;
+}
+
+.entry-def {
+  font-size: 0.97rem;
+  color: var(--ink-light);
+  grid-column: 1 / 3;
+  grid-row: 2;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+.entry-ls {
+  grid-column: 1 / 3;
+  grid-row: 3;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.3rem 0.6rem;
+  margin-top: 0.2rem;
+}
+
+.ls-conf {
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  padding: 0.1rem 0.45rem;
+  border-radius: 2px;
+  font-family: var(--display);
+  white-space: nowrap;
+}
+.ls-conf.exact        { background: #e6efe8; color: #2a5c35; border: 1px solid #b8d8bf; }
+.ls-conf.uv_variant   { background: #e6efe8; color: #2a5c35; border: 1px solid #b8d8bf; }
+.ls-conf.inflected_form { background: #eef0e6; color: #3a5230; border: 1px solid #c8d8b0; }
+.ls-conf.gap_pattern  { background: #f0ebe0; color: #5c4820; border: 1px solid #d8c898; }
+.ls-conf.prefix       { background: #eff0f5; color: #2a3a5c; border: 1px solid #b8c4d8; }
+.ls-conf.fuzzy        { background: #f5f0ee; color: #5c3a2a; border: 1px solid #d8c0b8; }
+.ls-conf.none         { background: #f0f0f0; color: #808080; border: 1px solid #d0d0d0; }
+
+.ls-ref {
+  font-size: 0.85rem;
+  color: var(--red);
+  font-family: var(--scholarly);
+  font-style: italic;
+}
+
+.ls-ref + .ls-ref::before {
+  content: '·';
+  margin-right: 0.6rem;
+  color: var(--rule);
+  font-style: normal;
+}
+
+/* ── State Messages ────────────────────────────────────── */
+.state-message {
+  text-align: center;
+  padding: 3rem 1rem;
+  font-family: var(--display);
+}
+
+.state-message .ornament {
+  font-size: 2rem;
+  color: var(--red);
+  display: block;
+  margin-bottom: 0.8rem;
+  opacity: 0.5;
+}
+
+.state-message p {
+  color: #8a7a6a;
+  font-style: italic;
+  font-size: 1rem;
+}
+
+.state-message .count {
+  font-size: 0.82rem;
+  color: #a09080;
+  margin-top: 0.4rem;
+  letter-spacing: 0.06em;
+}
+
+/* Splash screen */
+.splash {
+  text-align: center;
+  padding: 2rem 1rem 1rem;
+}
+
+.splash-ornament {
+  font-size: 2.5rem;
+  letter-spacing: 0.4em;
+  color: var(--red);
+  opacity: 0.4;
+  display: block;
+  margin-bottom: 1.2rem;
+  user-select: none;
+}
+
+.splash p {
+  font-family: var(--display);
+  font-style: italic;
+  color: var(--ink-light);
+  font-size: 1rem;
+  max-width: 420px;
+  margin: 0 auto 0.6rem;
+  line-height: 1.6;
+}
+
+.splash .colophon {
+  font-size: 0.78rem;
+  color: #a09080;
+  letter-spacing: 0.08em;
+  margin-top: 1.2rem;
+}
+
+/* ── Footer ─────────────────────────────────────────────── */
+footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-top: 1px solid var(--rule);
+  font-family: var(--display);
+  font-size: 0.78rem;
+  color: #a09080;
+  letter-spacing: 0.08em;
+}
+
+footer .orn { color: var(--red); }
+
+/* ── Loading indicator ──────────────────────────────────── */
+#loading {
+  text-align: center;
+  padding: 4rem 1rem;
+  font-family: var(--display);
+  font-style: italic;
+  color: #8a7a6a;
+}
+
+/* ── Alpha Nav ──────────────────────────────────────────── */
+.alpha-nav {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  border-top: 1px solid var(--rule);
+  border-bottom: 1px solid var(--rule);
+  background: var(--paper-dark);
+}
+
+.alpha-nav-inner {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0;
+  padding: 0.35rem 0;
+}
+
+.alpha-btn {
+  font-family: var(--display);
+  font-size: 1.05rem;
+  color: var(--ink-light);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0.55rem;
+  line-height: 1;
+  transition: color 0.12s;
+  letter-spacing: 0.02em;
+  position: relative;
+}
+
+.alpha-btn:hover { color: var(--red); }
+
+.alpha-btn.active {
+  color: var(--red);
+  font-style: italic;
+}
+
+.alpha-btn.active::after {
+  content: '';
+  display: block;
+  height: 2px;
+  background: var(--red);
+  position: absolute;
+  bottom: 0;
+  left: 0.55rem;
+  right: 0.55rem;
+}
+
+.alpha-btn.unavailable {
+  color: var(--rule);
+  cursor: default;
+  pointer-events: none;
+}
+
+.alpha-sep {
+  color: var(--rule);
+  font-size: 0.7rem;
+  align-self: center;
+  user-select: none;
+}
+
+/* Browse section dividers */
+.browse-section {
+  margin-top: 1.4rem;
+}
+
+.browse-section-head {
+  font-family: var(--display);
+  font-size: 0.75rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--red);
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.2rem;
+}
+
+.browse-section-head::before,
+.browse-section-head::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--red);
+  opacity: 0.35;
+}
+
+.browse-section-head::before { flex: 0 0 1.2rem; }
+
+/* Show-more button */
+.show-more-wrap {
+  text-align: center;
+  padding: 1.2rem 0 0.5rem;
+}
+
+.show-more-btn {
+  font-family: var(--display);
+  font-size: 0.9rem;
+  font-style: italic;
+  color: var(--red);
+  background: none;
+  border: 1px solid var(--red);
+  padding: 0.4rem 1.2rem;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: background 0.12s, color 0.12s;
+}
+
+.show-more-btn:hover {
+  background: var(--red);
+  color: var(--paper);
+}
+
+/* ── Responsive ─────────────────────────────────────────── */
+@media (max-width: 520px) {
+  .entry { grid-template-columns: 1fr; }
+  .entry-section { grid-column: 1; grid-row: auto; text-align: left; }
+  .alpha-btn { padding: 0.25rem 0.38rem; font-size: 0.95rem; }
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="ornament-band" aria-hidden="true">❧ &nbsp; ✦ &nbsp; ❦ &nbsp; ✦ &nbsp; ❧</div>
+  <h1>Knyght's Dictionarium</h1>
+  <p class="subtitle">The Dictionary of Syr Thomas Eliot Knyght</p>
+  <div class="header-rule" aria-hidden="true"><span>❦</span></div>
+  <div style="height:0.9rem"></div>
+</header>
+
+<main>
+  <div class="search-section">
+    <label class="search-label" for="query">Search Latin or English</label>
+    <div class="search-wrap">
+      <input type="text" id="query" autocomplete="off" autocorrect="off"
+             spellcheck="false" placeholder="e.g. abacus · table · virtue">
+    </div>
+    <p class="search-meta" id="search-meta">Loading lexicon…</p>
+  </div>
+
+  <nav class="alpha-nav" aria-label="Browse by letter">
+    <div class="alpha-nav-inner" id="alpha-nav-inner">
+      <!-- populated by JS -->
+    </div>
+  </nav>
+
+  <div id="results-container">
+    <div id="loading">
+      <span style="font-size:1.5rem;color:var(--red);display:block;margin-bottom:0.5rem">❧</span>
+      Loading the 1538 Dictionarium…
+    </div>
+  </div>
+</main>
+
+<footer>
+  <span class="orn">❧</span>
+  &ensp;Imprinted at London · In ædibus Thomæ Bertheleti · Anno <span style="font-variant:small-caps">m. d. xxxviii</span>&ensp;
+  <span class="orn">❦</span>
+</footer>
+
+<script>
+/* ── Normalisation (mirrors Python) ───────────────────── */
+const MACRON_FROM = 'āēīōūĀĒĪŌŪáéíóúÁÉÍÓÚàèìòùÀÈÌÒÙâêîôûÂÊÎÔÛäëïöüÄËÏÖÜ';
+const MACRON_TO   = 'aeiouAEIOUaeiouAEIOUaeiouAEIOUaeiouAEIOUaeiouAEIOU';
+const macronMap   = new Map([...MACRON_FROM].map((c, i) => [c, MACRON_TO[i]]));
+
+function normalize(s) {
+  s = [...s].map(c => macronMap.get(c) ?? c).join('');
+  s = s.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  s = s.toLowerCase().replace(/[^a-z0-9 ]/g, ' ').replace(/\s+/g, ' ').trim();
+  return s;
+}
+
+/* u/v interchanges for Latin orthography */
+function normVariants(s) {
+  const n = normalize(s);
+  const uv = n.replace(/u/g, 'v');
+  const vu = n.replace(/v/g, 'u');
+  return [...new Set([n, uv, vu])];
+}
+
+/* ── Scoring ───────────────────────────────────────────── */
+const CONF_RANK = {
+  exact: 0, uv_variant: 1, inflected_form: 2, gap_pattern: 3,
+  prefix: 4, fuzzy: 5, none: 6
+};
+
+function scoreEntry(entry, queryNorm, queryVariants, isLatinQuery) {
+  const orth  = entry.n;          // already normalised
+  const defn  = normalize(entry.d);
+  let score   = -1;
+
+  // Latin heading matches
+  for (const q of queryVariants) {
+    if (orth === q)                                score = Math.max(score, 100);
+    else if (orth.startsWith(q))                   score = Math.max(score, 80 - orth.length + q.length);
+    else if (orth.includes(q))                     score = Math.max(score, 55);
+  }
+
+  // English definition match (always tried)
+  if (defn.includes(queryNorm))                    score = Math.max(score, 40);
+  for (const word of defn.split(' ')) {
+    if (word.startsWith(queryNorm) && word.length > queryNorm.length)
+                                                   score = Math.max(score, 35);
+  }
+
+  // Prefer higher L&S confidence for equal scores
+  const confBonus = (6 - (CONF_RANK[entry.c] ?? 6)) * 0.5;
+
+  return score >= 0 ? score + confBonus : -1;
+}
+
+/* ── Rendering ─────────────────────────────────────────── */
+const CONF_LABEL = {
+  exact:          '● exact',
+  uv_variant:     '● u/v',
+  inflected_form: '◉ form',
+  gap_pattern:    '◎ gap',
+  prefix:         '○ prefix',
+  fuzzy:          '◌ fuzzy',
+  none:           '— none',
+};
+
+function highlightOrth(orth, queryNorm) {
+  // Find the query string in the normalized orth and mark it
+  const normOrth = normalize(orth.replace(/[•〈〉◊…]/g, ''));
+  const idx = normOrth.indexOf(queryNorm);
+  if (idx < 0) return escHtml(orth);
+  // Map back from normOrth index to original orth is complex;
+  // do a simple case-insensitive replacement instead
+  const re = new RegExp('(' + escRe(orth.slice(0, idx + queryNorm.length)) + ')', 'i');
+  return escHtml(orth).replace(
+    new RegExp(`(.{${idx}})(.{${queryNorm.length}})`, ''),
+    (_, pre, match) => escHtml(pre) + '<mark>' + escHtml(match) + '</mark>'
+  );
+}
+
+function escHtml(s) {
+  return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function escRe(s) {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+function renderEntry(entry, queryNorm) {
+  const confClass = entry.c || 'none';
+  const showLS    = confClass !== 'prefix' && confClass !== 'none';
+
+  const refs = showLS
+    ? (entry.r || []).slice(0, 3)
+        .map(r => `<span class="ls-ref">${escHtml(r.w || r.k)}</span>`)
+        .join('')
+    : '';
+
+  const confLabel = CONF_LABEL[confClass] || '— none';
+
+  // Highlight matched prefix in orth
+  const orth = escHtml(entry.o);
+  const normOrth = entry.n;
+  let orthHtml = orth;
+  if (queryNorm && normOrth.startsWith(queryNorm)) {
+    // Simple prefix highlight
+    const matchLen = queryNorm.length;
+    // Find first letter position in original
+    let rawIdx = 0, normIdx = 0;
+    while (normIdx < matchLen && rawIdx < entry.o.length) {
+      const nc = normalize(entry.o[rawIdx]);
+      if (nc && nc !== ' ') normIdx++;
+      rawIdx++;
+    }
+    const highlighted = '<mark>' + escHtml(entry.o.slice(0, rawIdx)) + '</mark>'
+                       + escHtml(entry.o.slice(rawIdx));
+    orthHtml = highlighted;
+  }
+
+  return `<article class="entry">
+    <h2 class="entry-orth">${orthHtml}</h2>
+    <span class="entry-section">${escHtml(entry.h)}</span>
+    <p class="entry-def">${escHtml(entry.d)}</p>
+    ${showLS ? `<div class="entry-ls">
+      <span class="ls-conf ${confClass}">${confLabel}</span>
+      ${refs}
+    </div>` : ''}
+  </article>`;
+}
+
+/* ── Search ────────────────────────────────────────────── */
+let ENTRIES = null;
+
+function search(raw) {
+  const container = document.getElementById('results-container');
+  const meta      = document.getElementById('search-meta');
+
+  if (!raw.trim()) {
+    showSplash();
+    meta.textContent = `${ENTRIES.length.toLocaleString()} entries · 1538 edition`;
+    return;
+  }
+
+  const queryNorm    = normalize(raw);
+  const queryVariants = normVariants(raw);
+  const isLatin = /^[a-zA-Zāēīōūáéíóú]+$/.test(raw.trim());
+
+  // Score and filter
+  const scored = [];
+  for (const entry of ENTRIES) {
+    const s = scoreEntry(entry, queryNorm, queryVariants, isLatin);
+    if (s >= 0) scored.push({ entry, s });
+  }
+
+  scored.sort((a, b) => b.s - a.s || a.entry.n.localeCompare(b.entry.n));
+
+  const MAX = 40;
+  const shown = scored.slice(0, MAX);
+
+  if (shown.length === 0) {
+    container.innerHTML = `
+      <div class="state-message">
+        <span class="ornament">❦</span>
+        <p>No entries found for <em>${escHtml(raw)}</em></p>
+        <p class="count">Try a different spelling or root form</p>
+      </div>`;
+    meta.textContent = 'No results';
+    return;
+  }
+
+  // Group by confidence tier
+  const tiers = [
+    { label: 'Close matches',     confs: new Set(['exact','uv_variant','inflected_form']), entries: [] },
+    { label: 'Candidate matches', confs: new Set(['gap_pattern','prefix','fuzzy']),         entries: [] },
+    { label: 'Partial matches',   confs: new Set(['none']),                                  entries: [] },
+  ];
+
+  for (const { entry } of shown) {
+    if (entry.s >= 70) {
+      tiers[0].entries.push(entry);
+    } else if (entry.s >= 35) {
+      tiers[1].entries.push(entry);
+    } else {
+      tiers[2].entries.push(entry);
+    }
+  }
+
+  let html = '';
+  for (const tier of tiers) {
+    if (tier.entries.length === 0) continue;
+    html += `<div class="results-section-label">${tier.label}</div>`;
+    html += tier.entries.map(e => renderEntry(e, queryNorm)).join('');
+  }
+
+  if (scored.length > MAX) {
+    html += `<p style="text-align:center;color:#a09080;font-style:italic;
+                        font-family:var(--display);font-size:0.85rem;padding:1rem 0">
+      Showing ${MAX} of ${scored.length} matches
+    </p>`;
+  }
+
+  container.innerHTML = html;
+  meta.textContent = `${scored.length} result${scored.length !== 1 ? 's' : ''} · ${ENTRIES.length.toLocaleString()} entries`;
+}
+
+function showSplash() {
+  document.getElementById('results-container').innerHTML = `
+    <div class="splash">
+      <span class="splash-ornament">❧ ✦ ❦</span>
+      <p>Search in Latin to find Knyght's English definitions, or search in English to find the Latin.</p>
+      <p>Matches are linked to the Lewis &amp; Short lexicon where available.</p>
+      <p class="colophon">
+        Thomas Elyot · London 1538 · 26,542 entries<br>
+        Matched to Lewis &amp; Short (Perseus Project, 1879)
+      </p>
+    </div>`;
+}
+
+/* ── Alphabetical Browse ───────────────────────────────── */
+// All 26 letters; those not in lexicon shown as unavailable
+const ALL_LETTERS = 'abcdefghijklmnopqrstuvwxyz'.split('');
+
+let LETTER_INDEX   = {};   // letter -> { sections: [{head, entries}] }
+let activeLetter   = null;
+let browseShown    = 0;
+const BROWSE_PAGE  = 80;
+
+function buildLetterIndex(entries) {
+  // Group entries by first letter, then by section head
+  const byLetter = {};
+  for (const entry of entries) {
+    const ch = entry.n[0];
+    if (!ch) continue;
+    if (!byLetter[ch]) byLetter[ch] = {};
+    const head = entry.h || '';
+    if (!byLetter[ch][head]) byLetter[ch][head] = [];
+    byLetter[ch][head].push(entry);
+  }
+  // Convert to sorted array of sections
+  for (const ch of Object.keys(byLetter)) {
+    const sectionMap = byLetter[ch];
+    const sections = Object.keys(sectionMap).sort().map(head => ({
+      head,
+      entries: sectionMap[head]
+    }));
+    LETTER_INDEX[ch] = { sections, total: sections.reduce((n, s) => n + s.entries.length, 0) };
+  }
+}
+
+function buildAlphNav() {
+  const nav = document.getElementById('alpha-nav-inner');
+  const frags = [];
+  ALL_LETTERS.forEach((letter, idx) => {
+    const upper   = letter.toUpperCase();
+    const hasData = !!LETTER_INDEX[letter];
+    const cls     = hasData ? 'alpha-btn' : 'alpha-btn unavailable';
+    const onclick = hasData
+      ? `onclick="browseLetter('${letter}')" aria-label="Browse ${upper}"`
+      : `aria-disabled="true"`;
+    frags.push(`<button class="${cls}" data-letter="${letter}" ${onclick}>${upper}</button>`);
+    // Thin separator mid-alphabet for readability
+    if (idx === 12) frags.push('<span class="alpha-sep" aria-hidden="true">·</span>');
+  });
+  nav.innerHTML = frags.join('');
+}
+
+function setActiveLetter(letter) {
+  // Update button states
+  document.querySelectorAll('.alpha-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.letter === letter);
+  });
+  activeLetter = letter;
+}
+
+function renderBrowseSection(section) {
+  const heads = section.entries.map(e => renderEntry(e, '')).join('');
+  return `<div class="browse-section">
+    <div class="browse-section-head">${escHtml(section.head)}</div>
+    ${heads}
+  </div>`;
+}
+
+function browseLetter(letter) {
+  // Clear search box
+  queryInput.value = '';
+  setActiveLetter(letter);
+
+  const data = LETTER_INDEX[letter];
+  if (!data) return;
+
+  browseShown = BROWSE_PAGE;
+  renderBrowseResults(letter);
+}
+
+function renderBrowseResults(letter) {
+  const data      = LETTER_INDEX[letter];
+  const container = document.getElementById('results-container');
+  const meta      = document.getElementById('search-meta');
+  const upper     = letter.toUpperCase();
+
+  // Flatten all entries in order, tracking section boundaries
+  let html = '';
+  let shown = 0;
+  for (const section of data.sections) {
+    if (shown >= browseShown) break;
+    const sectionEntries = section.entries.slice(0, browseShown - shown);
+    html += `<div class="browse-section">
+      <div class="browse-section-head">${escHtml(section.head)}</div>
+      ${sectionEntries.map(e => renderEntry(e, '')).join('')}
+    </div>`;
+    shown += sectionEntries.length;
+  }
+
+  const remaining = data.total - browseShown;
+  if (remaining > 0) {
+    html += `<div class="show-more-wrap">
+      <button class="show-more-btn" onclick="showMore('${letter}')">
+        Show ${Math.min(BROWSE_PAGE, remaining)} more of ${remaining} remaining ❧
+      </button>
+    </div>`;
+  }
+
+  container.innerHTML = html;
+  meta.textContent = `${upper} · ${data.total.toLocaleString()} entries`;
+}
+
+function showMore(letter) {
+  browseShown += BROWSE_PAGE;
+  renderBrowseResults(letter);
+  // Scroll to the bottom of previously shown content
+  const btn = document.querySelector('.show-more-btn');
+  if (btn) btn.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+/* ── Debounce ──────────────────────────────────────────── */
+function debounce(fn, ms) {
+  let t;
+  return (...args) => { clearTimeout(t); t = setTimeout(() => fn(...args), ms); };
+}
+
+/* ── Initialise ────────────────────────────────────────── */
+const queryInput = document.getElementById('query');
+
+queryInput.addEventListener('input', debounce(e => {
+  if (!ENTRIES) return;
+  // Typing deactivates letter browse
+  setActiveLetter(null);
+  search(e.target.value);
+}, 120));
+
+// Load JSON
+fetch('lexicon.json')
+  .then(r => {
+    if (!r.ok) throw new Error(r.statusText);
+    return r.json();
+  })
+  .then(data => {
+    ENTRIES = data;
+    buildLetterIndex(ENTRIES);
+    buildAlphNav();
+    document.getElementById('search-meta').textContent =
+      `${ENTRIES.length.toLocaleString()} entries · 1538 edition`;
+    showSplash();
+    queryInput.focus();
+    if (queryInput.value.trim()) search(queryInput.value);
+  })
+  .catch(err => {
+    document.getElementById('results-container').innerHTML = `
+      <div class="state-message">
+        <span class="ornament">❦</span>
+        <p>Could not load the lexicon.</p>
+        <p class="count">Serve this directory with a local HTTP server:<br>
+        <code style="font-style:normal;background:#e8e0d0;padding:0.2rem 0.5rem">
+          python3 -m http.server 8080
+        </code></p>
+      </div>`;
+    document.getElementById('search-meta').textContent = 'Error loading lexicon';
+    console.error(err);
+  });
+</script>
+</body>
+</html>
